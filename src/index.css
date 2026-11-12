@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #0a0c10;
+    --bg-surface: #12161f;
+    --bg-surface-elevated: #171d28;
+    --bg-header: rgba(12, 15, 20, 0.92);
+    --border-subtle: #1f2633;
+    --border-strong: #2a3445;
+    --border-light: #161c26;
+    --text-primary: #e8ecf2;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --input-bg: #0c0f14;
+    --input-border: #2a3445;
+    --card-hover: rgba(16, 185, 129, 0.1);
+  }
+
+  :root.light, html.light {
+    --bg-main: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f1f5f9;
+    --bg-header: rgba(255, 255, 255, 0.94);
+    --border-subtle: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --border-light: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e1;
+    --card-hover: rgba(16, 185, 129, 0.08);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .font-mono {
+    font-family: 'Space Mono', monospace, ui-monospace;
+  }
+}
+
+/* Theme Adaptation Utilities for Dark & Light seamlessly */
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Light mode overrides for high-contrast laboratory aesthetics */
+html.light .bg-\[\#0a0c10\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-\[\#0c0f14\] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#0c0f14\]\/90 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html.light .bg-\[\#12161f\] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#171d28\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-\[\#151a24\] {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .bg-\[\#1a212e\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-\[\#202738\] {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .bg-\[\#161c26\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .border-\[\#1f2633\] {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-\[\#1a212e\] {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-\[\#262f3d\] {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .border-\[\#2a3445\] {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .border-\[\#2b3547\] {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text adjustments in light mode */
+html.light .text-\[\#e8ecf2\] {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Light mode inputs & selects */
+html.light input,
+html.light select,
+html.light textarea {
+  color: #0f172a !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Card shadows in light mode */
+html.light .shadow-sm,
+html.light .shadow-xs,
+html.light .rounded-xl {
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+}
+
+/* LabMap technical canvas in light mode */
+html.light .bg-\[\#070a0f\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-\[\#090d15\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .border-\[\#1b2230\],
+html.light .border-\[\#222b3b\],
+html.light .border-\[\#222a38\] {
+  border-color: #cbd5e1 !important;
+}
+
+html.light .bg-\[\#141923\] {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .bg-\[\#192231\] {
+  background-color: #dbeafe !important;
+}
+
+/* Modal dark overlay background readability */
+html.light .bg-black\/80,
+html.light .bg-black\/70,
+html.light .bg-black\/60 {
+  background-color: rgba(15, 23, 42, 0.65) !important;
+}
+
+
+/* Print Styles for Laboratory Labels & Safety Handbooks */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+
+  /* When printing safety handbook specifically */
+  body.printing-safety-handbook {
+    background: #ffffff !important;
+  }
+  body.printing-safety-handbook * {
+    visibility: hidden;
+  }
+  body.printing-safety-handbook #chemsafe-printable-handbook,
+  body.printing-safety-handbook #chemsafe-printable-handbook * {
+    visibility: visible;
+  }
+  body.printing-safety-handbook #chemsafe-printable-handbook {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .page-break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .page-break-before-always {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  @page {
+    margin: 15mm 12mm 15mm 12mm;
+    size: A4 portrait;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
