@@ -55,15 +55,6 @@ export const WarningChecker: React.FC<WarningCheckerProps> = ({
 
   const isIdentical = chem1Key && chem2Key && (chem1Key === chem2Key || compactFormula(chem1?.formula || '') === compactFormula(chem2?.formula || ''));
 
-  // Common high-priority warnings
-  const commonWarningList = [
-    { k1: 'hcl', k2: 'naoh', label: 'HCl + NaOH', grade: 'KHTN 8 · Hóa 10–11', tag: 'Tỏa nhiệt', danger: 'Trung hòa tỏa nhiệt mạnh, dung dịch đặc có thể sôi và bắn ra' },
-    { k1: 'h2so4', k2: 'naoh', label: 'H₂SO₄ đặc + NaOH', grade: 'KHTN 8 · Hóa 11', tag: 'Tỏa nhiệt', danger: 'Tỏa nhiệt rất mạnh, tăng áp suất, bắn axit gây bỏng' },
-    { k1: 'hcl', k2: 'kmno4', label: 'HCl đặc + KMnO₄ (thuốc tím)', grade: 'KHTN 6 · Hóa 10', tag: 'Khí độc', danger: 'Giải phóng khí Cl₂ độc, chỉ làm trong tủ hút' },
-    { k1: 'kmno4', k2: 'h2so4', label: 'KMnO₄ + H₂SO₄ đặc', grade: 'Hóa 10–12', tag: 'Cháy nổ', danger: 'Tạo Mn₂O₇, chất oxi hóa cực mạnh, dễ nổ' },
-    { k1: 'kmno4', k2: 'ethanol', label: 'KMnO₄ + Cồn (C₂H₅OH)', grade: 'KHTN 9 · Hóa 11', tag: 'Cháy nổ', danger: 'Chất oxi hóa mạnh gặp cồn có thể tự bốc cháy' }
-  ];
-
   const handleSwap = () => {
     const temp = chem1Key;
     setChem1Key(chem2Key);
@@ -91,8 +82,8 @@ export const WarningChecker: React.FC<WarningCheckerProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Main Checker Box: Left 7 cols */}
-        <div className="lg:col-span-7 space-y-5">
+        {/* Main Checker Box */}
+        <div className="lg:col-span-8 lg:col-start-3 space-y-5">
           <div className="bg-[#12161f] border border-[#1f2633] rounded-xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">
@@ -322,49 +313,6 @@ export const WarningChecker: React.FC<WarningCheckerProps> = ({
               )}
             </div>
           )}
-        </div>
-
-        {/* Common Dangerous Mixtures List: Right 5 cols */}
-        <div className="lg:col-span-5 space-y-3">
-          <div className="flex items-center justify-between pb-1">
-            <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
-              5 cặp tương kỵ thường gặp trong chương trình giáo dục phổ thông
-            </span>
-            <span className="text-[11px] text-slate-400 font-mono">Nhấn để nạp nhanh</span>
-          </div>
-
-          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
-            {commonWarningList.map((item, index) => {
-              const isSelected = (chem1Key === item.k1 && chem2Key === item.k2) || (chem1Key === item.k2 && chem2Key === item.k1);
-              return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    setChem1Key(item.k1);
-                    setChem2Key(item.k2);
-                  }}
-                  className={`p-3 rounded-lg border transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-rose-950/20 border-rose-500/50 shadow-xs'
-                      : 'bg-[#12161f] border-[#1f2633] hover:border-[#2f394d] hover:bg-[#161c27]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-xs font-semibold text-slate-200">
-                      {item.label}
-                    </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase">
-                      {item.tag}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-400 leading-snug">
-                    {item.danger}
-                  </p>
-                  <p className="text-[10px] font-mono text-emerald-400/80 mt-1">🎓 {item.grade}</p>
-                </div>
-              );
-            })}
-          </div>
         </div>
       </div>
     </div>

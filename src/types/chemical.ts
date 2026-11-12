@@ -76,7 +76,7 @@ export interface InventoryItem {
   updatedAt?: string;
 }
 
-export type ActiveTab = 'warning' | 'qr' | 'database' | 'inventory' | 'labmap' | 'calc' | 'advisor';
+export type ActiveTab = 'warning' | 'pairs' | 'qr' | 'database' | 'inventory' | 'labmap' | 'calc' | 'advisor';
 
 export type CabinetType = 'acid' | 'base' | 'flammable' | 'oxidizer' | 'general' | 'cold' | 'fume_hood' | 'toxic';
 

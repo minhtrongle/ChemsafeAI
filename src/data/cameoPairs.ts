@@ -43,6 +43,9 @@ for (const r of cameoData.records) {
 
 export const CAMEO_PAIR_COUNT = INDEX.size;
 
+/** Toàn bộ cặp theo thứ tự trong file CAMEO (dùng cho trang "Danh sách tương kỵ") */
+export const ALL_CAMEO_PAIRS: CameoPair[] = [...INDEX.values()];
+
 /** Tra cặp theo công thức, khóa hoặc tên; A+B = B+A. Trả về null nếu CAMEO không có cặp này. */
 export function getCameoPair(a: string, b: string): CameoPair | null {
   if (!a || !b || toMixKey(a) === toMixKey(b)) return null;
