@@ -1,5 +1,6 @@
 import type { MixWarning } from '../types/chemical';
-import { compactFormula } from './chemicals';
+import { toMixKey } from './mixKey';
+import { getCameoPair } from './cameoPairs';
 
 export const MIX_WARNINGS: Record<string, MixWarning> = {
   "hcl|naoh": {
@@ -249,22 +250,8 @@ export const MIX_WARNINGS: Record<string, MixWarning> = {
   }
 };
 
-// Bảng luật dùng khóa theo tên (ethanol, acetone...) cho chất hữu cơ, còn kho và sơ đồ tủ
-// lưu công thức (C₂H₅OH...). Hàm toMixKey đưa mọi cách viết về cùng một khóa trước khi tra,
-// để mọi luật đều hoạt động ở cả trang Kiểm tra tương kỵ, Kho và Bố trí tủ.
-const KEY_ALIASES: Record<string, string> = {
-  c2h5oh: 'ethanol',
-  ch3oh: 'methanol',
-  ch3coch3: 'acetone',
-  c4h10o: 'diethyl_ether',
-  diethylether: 'diethyl_ether',
-  ch2cl2: 'dcm',
-};
-
-export function toMixKey(value: string): string {
-  const c = compactFormula(value);
-  return KEY_ALIASES[c] || c;
-}
+// toMixKey (đưa mọi cách viết về cùng một khóa) nằm trong mixKey.ts; xuất lại ở đây để mã cũ vẫn import được.
+export { toMixKey };
 
 export function getMixKey(key1: string, key2: string): string | null {
   const k1 = toMixKey(key1);
@@ -377,6 +364,27 @@ for (const [key, src] of Object.entries(MIX_SOURCES)) {
   w.sources = src.refs.map(([kind, id, name]) => kind === 'c'
     ? { label: `CAMEO Chemicals: ${name}`, url: `https://cameochemicals.noaa.gov/chemical/${id}` }
     : { label: `ICSC ${id}: ${name}`, url: `https://chemicalsafety.ilo.org/dyn/icsc/showcard.display?p_card_id=${id}&p_version=2&p_lang=en` });
+}
+
+// ---------------------------------------------------------------------------
+// LIÊN KẾT CAMEO CỦA ĐÚNG CẶP (từ tuong_ky_hoa_chat_CAMEO.xlsx → cameoIncompatibilities.json)
+// Mỗi cảnh báo có thêm nguồn đầu tiên trỏ thẳng tới trang "Reactivity – documentation" của cặp
+// trên CAMEO Chemicals, để người dùng tự đối chiếu phản ứng chính xác.
+// ---------------------------------------------------------------------------
+for (const [key, w] of Object.entries(MIX_WARNINGS)) {
+  const [a, b] = key.split('|');
+  const pair = getCameoPair(a, b);
+  if (!pair) continue;
+  w.cameoPair = {
+    url: pair.url,
+    conclusion: pair.conclusion,
+    hazardsVi: pair.hazardsVi,
+    possibleGasesVi: pair.possibleGasesVi,
+  };
+  w.sources = [
+    { label: `CAMEO Reactivity: ${pair.chemicalA} + ${pair.chemicalB}`, url: pair.url },
+    ...(w.sources || []),
+  ];
 }
 
 /** Liên kết CAMEO chung để tự tra cặp bất kỳ (công cụ "Predict Reactivity") */

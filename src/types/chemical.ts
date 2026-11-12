@@ -52,6 +52,13 @@ export interface MixWarning {
   verified?: boolean;
   /** Tóm tắt bằng chứng từ nguồn (diễn giải, không trích nguyên văn) */
   evidence?: string;
+  /** Trang CAMEO Reactivity của đúng cặp này + kết luận/khí theo CAMEO (xlsx tương kỵ) */
+  cameoPair?: {
+    url: string;
+    conclusion: string;
+    hazardsVi: string[];
+    possibleGasesVi: string[];
+  };
 }
 
 export interface InventoryItem {

@@ -2,6 +2,7 @@ import React from 'react';
 import { ExternalLink, BadgeCheck, HelpCircle } from 'lucide-react';
 import type { Chemical, MixWarning } from '../types/chemical';
 import { CAMEO_REACTIVITY_URL } from '../data/mixWarnings';
+import { getCameoPair } from '../data/cameoPairs';
 
 interface Props {
   warning: MixWarning;
@@ -27,6 +28,13 @@ export const MixSourceLinks: React.FC<Props> = ({ warning, compact = false }) =>
           )}
           {warning.evidence && <span className="text-slate-400 leading-snug">{warning.evidence}</span>}
         </div>
+      )}
+      {!compact && warning.cameoPair && (
+        <p className="text-[11px] text-slate-400 leading-snug">
+          CAMEO dự đoán cặp này: <strong className="text-violet-300">{warning.cameoPair.conclusion}</strong>
+          {warning.cameoPair.possibleGasesVi.length > 0 && <> · Khí có thể sinh ra: {warning.cameoPair.possibleGasesVi.join(', ')}</>}
+          . CAMEO dự đoán theo nhóm phản ứng, nghiêng về trường hợp xấu nhất; mở liên kết để xem chi tiết.
+        </p>
       )}
       <div className="flex flex-wrap items-center gap-1.5">
         {!compact && <span className="text-[10.5px] font-mono text-violet-300 font-semibold">Kiểm chứng:</span>}
@@ -57,27 +65,42 @@ export const MixSourceLinks: React.FC<Props> = ({ warning, compact = false }) =>
 };
 
 /** Khi không có cảnh báo: gợi ý tự kiểm tra trên CAMEO Chemicals */
-export const CameoSelfCheck: React.FC<{ chems: (Chemical | undefined)[] }> = ({ chems }) => (
-  <div className="flex flex-wrap items-center gap-1.5 pt-1">
-    <span className="text-[10.5px] font-mono text-slate-400">Tự kiểm tra trên CAMEO Chemicals:</span>
-    {chems.filter(Boolean).map((c) => c!.cameoId ? (
+export const CameoSelfCheck: React.FC<{ chems: (Chemical | undefined)[] }> = ({ chems }) => {
+  const present = chems.filter(Boolean) as Chemical[];
+  const pair = present.length === 2 ? getCameoPair(present[0].formula, present[1].formula) : null;
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 pt-1">
+      <span className="text-[10.5px] font-mono text-slate-400">Tự kiểm tra trên CAMEO Chemicals:</span>
+      {pair && (
+        <a
+          href={pair.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`CAMEO dự đoán: ${pair.conclusion}`}
+          className="px-2 py-0.5 rounded text-[10.5px] font-mono bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 flex items-center gap-1"
+        >
+          Cặp {pair.chemicalA} + {pair.chemicalB} (CAMEO: {pair.conclusion}) <ExternalLink className="w-2.5 h-2.5" />
+        </a>
+      )}
+      {present.map((c) => c.cameoId ? (
+        <a
+          key={c.key}
+          href={`https://cameochemicals.noaa.gov/chemical/${c.cameoId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-2 py-0.5 rounded text-[10.5px] font-mono bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 flex items-center gap-1"
+        >
+          {c.formula} <ExternalLink className="w-2.5 h-2.5" />
+        </a>
+      ) : null)}
       <a
-        key={c!.key}
-        href={`https://cameochemicals.noaa.gov/chemical/${c!.cameoId}`}
+        href={CAMEO_REACTIVITY_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="px-2 py-0.5 rounded text-[10.5px] font-mono bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 flex items-center gap-1"
       >
-        {c!.formula} <ExternalLink className="w-2.5 h-2.5" />
+        Công cụ dự đoán phản ứng (Predict Reactivity) <ExternalLink className="w-2.5 h-2.5" />
       </a>
-    ) : null)}
-    <a
-      href={CAMEO_REACTIVITY_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="px-2 py-0.5 rounded text-[10.5px] font-mono bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 flex items-center gap-1"
-    >
-      Công cụ dự đoán phản ứng (Predict Reactivity) <ExternalLink className="w-2.5 h-2.5" />
-    </a>
-  </div>
-);
+    </div>
+  );
+};

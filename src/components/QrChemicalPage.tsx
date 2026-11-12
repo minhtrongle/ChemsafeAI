@@ -134,17 +134,19 @@ export const QrChemicalPage: React.FC<{ payload: QrPayload; appUrl: string }> = 
           <Row label="Lưu trữ" value={chem?.storage} />
           {incompatibles.length > 0 && (
             <div style={{ paddingTop: 10 }}>
-              <div style={{ color: '#64748b', fontSize: 13, marginBottom: 6 }}>Tuyệt đối không để gần / không trộn với:</div>
+              <div style={{ color: '#64748b', fontSize: 13, marginBottom: 6 }}>Tuyệt đối không để gần / không trộn với (bấm để xem cặp trên CAMEO Chemicals):</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                {incompatibles.map(({ other, warning }, i) => (
-                  <span
-                    key={i}
-                    title={warning.title}
-                    style={{ fontSize: 12, padding: '3px 8px', borderRadius: 6, border: `1px solid ${warning.level === 'danger' ? '#fda4af' : '#fcd34d'}`, background: warning.level === 'danger' ? '#fff1f2' : '#fffbeb', color: '#0f172a' }}
-                  >
-                    {other?.formula || '?'} {warning.verified === false ? '(chưa xác nhận)' : ''}
-                  </span>
-                ))}
+                {incompatibles.map(({ other, warning }, i) => {
+                  const chipStyle: React.CSSProperties = { fontSize: 12, padding: '3px 8px', borderRadius: 6, border: `1px solid ${warning.level === 'danger' ? '#fda4af' : '#fcd34d'}`, background: warning.level === 'danger' ? '#fff1f2' : '#fffbeb', color: '#0f172a', textDecoration: 'none' };
+                  const label = <>{other?.formula || '?'} {warning.verified === false ? '(chưa xác nhận)' : ''}</>;
+                  return warning.cameoPair ? (
+                    <a key={i} href={warning.cameoPair.url} target="_blank" rel="noopener noreferrer" title={`${warning.title} — xem cặp này trên CAMEO Chemicals`} style={chipStyle}>
+                      {label} ↗
+                    </a>
+                  ) : (
+                    <span key={i} title={warning.title} style={chipStyle}>{label}</span>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -213,11 +215,6 @@ export const QrChemicalPage: React.FC<{ payload: QrPayload; appUrl: string }> = 
           Thông tin tham khảo phục vụ giáo dục, không thay thế SDS của nhà sản xuất.<br />
           Dữ liệu tương kỵ: {Object.keys(MIX_WARNINGS).length} cặp, đối chiếu CAMEO Chemicals / ICSC.
         </p>
-        <div style={{ textAlign: 'center', marginTop: 10 }}>
-          <a href={appUrl} style={{ display: 'inline-block', padding: '10px 18px', borderRadius: 10, background: '#059669', color: '#ffffff', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
-            Mở ứng dụng ChemSafe AI
-          </a>
-        </div>
       </div>
     </div>
   );
