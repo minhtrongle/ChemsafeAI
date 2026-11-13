@@ -3,7 +3,6 @@ import { ActiveTab, Chemical, InventoryItem } from './types/chemical';
 import { getAllChemicals } from './data/chemicals';
 import { Navbar } from './components/Navbar';
 import { WarningChecker } from './components/WarningChecker';
-import { IncompatibilityList } from './components/IncompatibilityList';
 import { LabelGenerator } from './components/LabelGenerator';
 import { DatabaseBrowser } from './components/DatabaseBrowser';
 import { InventoryManager } from './components/InventoryManager';
@@ -92,8 +91,6 @@ export default function App() {
             onNavigateToQR={handleSelectForQR}
           />
         )}
-
-        {activeTab === 'pairs' && <IncompatibilityList />}
 
         {activeTab === 'qr' && (
           <LabelGenerator

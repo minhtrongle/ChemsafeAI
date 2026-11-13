@@ -57,13 +57,13 @@ export const IncompatibilityList: React.FC = () => {
   const reset = () => setVisible(PAGE);
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-5">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1f2633] pb-5">
+    <section className="space-y-5 border-t border-[#1f2633] pt-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-100 flex items-center gap-2.5">
-            <ListChecks className="w-6 h-6 text-amber-400" />
+          <h2 className="text-lg md:text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2.5">
+            <ListChecks className="w-5 h-5 text-amber-400" />
             Danh sách <span className="text-emerald-400">cặp hóa chất tương kỵ</span>
-          </h1>
+          </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
             Dữ liệu từ CAMEO Chemicals (NOAA), công cụ Reactivity. CAMEO dự đoán theo cặp nhóm phản ứng và nghiêng về trường hợp xấu nhất,
             nên hãy mở liên kết của từng cặp để xem chi tiết trước khi kết luận.
@@ -180,6 +180,6 @@ export const IncompatibilityList: React.FC = () => {
           </button>
         </div>
       )}
-    </div>
+    </section>
   );
 };

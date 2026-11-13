@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActiveTab } from '../types/chemical';
-import { AlertTriangle, QrCode, Database, Box, Calculator, ShieldCheck, MapPin, Sun, Moon, ListChecks } from 'lucide-react';
+import { AlertTriangle, QrCode, Database, Box, Calculator, ShieldCheck, MapPin, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface NavbarProps {
@@ -18,7 +18,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
     { id: 'warning', label: 'Cảnh báo trộn', icon: <AlertTriangle className="w-4 h-4" /> },
-    { id: 'pairs', label: 'Danh sách tương kỵ', icon: <ListChecks className="w-4 h-4" /> },
     { id: 'qr', label: 'Tạo nhãn QR', icon: <QrCode className="w-4 h-4" /> },
     { id: 'database', label: 'Cơ sở dữ liệu', icon: <Database className="w-4 h-4" /> },
     { id: 'inventory', label: 'Kho hóa chất', icon: <Box className="w-4 h-4" /> },
